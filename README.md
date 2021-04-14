@@ -145,7 +145,9 @@
 
 ## 👨🏻‍💻 public 폴더
 - public 폴더는 정적 파일을 저장, 제공할 수 있는 폴더이다.
-- <img src="/images/profile.png" alt="logo"/> 식으로 호출할 수 있다.
+```
+    <img src="/images/profile.png" alt="logo"/> 식으로 호출할 수 있다.
+```
 
 <br />
 
