@@ -33,6 +33,23 @@
 
 <br />
 
+### 🏃 Start
+- dev (dev 환경)
+- build, start (production 환경)
+
+```json
+//package.json
+    {
+        "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start"
+        },
+    }
+```
+<br />
+
+
 ## 👨🏻‍💻 Next.js Routing
 - 별다른 설정없이 pages 폴더안에 js파일을 만들면 자동으로 Routing 된다.
 - Next.js는 [] 문법으로 동적 url을 만들 수 있다.
