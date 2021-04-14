@@ -1,7 +1,29 @@
+import axios from 'axios';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import Item from '../../src/components/Item';
 
-export default function About() {
+export default function Post() {
     const router = useRouter();
+    const { id } = router.query;
+    const API_URL = `http://makeup-api.herokuapp.com/api/v1/products/${id}.json`
 
-    return <div>ID: {router.query.id}</div>
-}
+    const [item, setItem] = useState({});
+
+    function getData() {
+        axios.get(API_URL)
+        .then(res => {
+            setItem(res.data);
+        })
+    };
+
+    useEffect(() => {
+        if (id && id > 0) {
+            getData();
+        }
+    }, [id])
+
+    return (
+        <Item item={item} />
+    );
+};
