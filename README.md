@@ -1,34 +1,141 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 💻 Next-tutorial
+### Next.js Tutorial 저장소
 
-## Getting Started
+<br />
 
-First, run the development server:
+<!-- ## 🎥 App View -->
+<!-- ### 📺 Stack Navigation
+<p align='center'>
+    <img src='https://user-images.githubusercontent.com/64779472/114034632-50637880-98b9-11eb-98d8-a2111e389a09.PNG' width="400" height="730">
+</p> -->
 
-```bash
-npm run dev
-# or
-yarn dev
+<!-- <br /> -->
+
+## 👨🏻‍💻 Next.js Start
+🔖 Next.js: https://nextjs.org/
+
+<br />
+
+### 🏃 Install
+- create-next-app으로 설치하면 다음과 같은 기능이 있다.
+    1. 컴파일과 번들링이 자동으로 된다.(webpack, babel)
+    2. 자동 리프레쉬 기능으로 수정하면 화면에 바로 반영된다.
+    3. 서버사이드 렌더링이 지원된다.
+    4. 스태틱 파일(정적 파일)을 지원한다.
+
+<br />
+
+```javascript
+    //Install
+    1. npx create-next-app
+    2. yarn create next-app
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+<br />
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## 👨🏻‍💻 Next.js Routing
+- 별다른 설정없이 pages 폴더안에 js파일을 만들면 자동으로 Routing 된다.
+- Next.js는 [] 문법으로 동적 url을 만들 수 있다.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+<br />
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+```javascript
+    //pages/view/[id].js
+    import {useRouter} from 'next/router';
 
-## Learn More
+    export default function About() {
+        const router = useRouter();
 
-To learn more about Next.js, take a look at the following resources:
+        return <div>ID: {router.query.id}</div>
+    }
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+<br />
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- 위처럼 작성하고 localhost:3000/view/123으로 접속시 ID: 123이 출력됨을 확인 할 수 있습니다.
+- router.query.id의 값은 URL(localhost:3000/view/123)의 123이다.
+- 만약 파일 이름이 [title].js였다면 router.query.title 이다.
 
-## Deploy on Vercel
+<br />
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 👨🏻‍💻 _app.js
+- 레이아웃을 만드려면 _app.js를 이용해야 한다.
+- _app.js
+    1. 페이지 전환 시 레이아웃을 유지할 수 있다.
+    2. 페이지 전환시 상태값을 유지할 수 있다.
+    3. componentDidCatch를 이용해서 커스텀 에러 핸들링을 할 수 있다.
+    4. 추가적인 데이터를 페이지로 주입시키는게 가능하다.
+    5. 글로벌 CSS를 이곳에 선언한다.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+<br />
+
+```javascript
+//props넘어온 Component는 현재 page를 의미 즉, 페이지 전환시 이 Component가 변화함
+//pageProps는 데이터패칭 메서드를 통해 미리 가져온 초기 객체
+    function MyApp({ Component, pageProps }) {
+        return <Component {...pageProps} />
+    }
+```
+
+<br />
+
+## 👨🏻‍💻 _document.js
+- next에서 제공하는 document를 custom 할 수 있다.
+- next.js는 마크업 정의를 건너뛰기 때문에 이 파일을 생성해서 custom 해주어야 한다. (즉, html태그, head태그, body 태그)
+
+<br />
+
+```javascript
+    import Document, { Html, Head, Main, NextScript } from 'next/document'
+
+    class MyDocument extends Document {
+
+        render() {
+            return (
+            <Html lang="ko">
+                <Head />
+                <body>
+                <Main />
+                <NextScript />
+                </body>
+            </Html>
+            )
+        }
+    }
+
+    export default MyDocument
+```
+
+<br />
+
+- _document에서의 Head와 next/head의 Head 태그와 다르다.
+```javascript
+    //pages/index.js
+    import Head from 'next/head'
+
+    export default function Home() {
+        return (
+            <div>
+            {/* Head 태그로 페이지 타이틀을 수정할 수 있다. */}
+                <Head>
+                    <title>HOME | 전민재</title>
+                </Head>
+            (...)
+        )
+    }
+```
+
+
+## 👨🏻‍💻 public 폴더
+- public 폴더는 정적 파일을 저장, 제공할 수 있는 폴더이다.
+- <img src="/images/profile.png" alt="logo"/> 식으로 호출할 수 있다.
+
+<br />
+
+
+
+### 🏃 
+
+- 
+
+<br />
