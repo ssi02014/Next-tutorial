@@ -151,10 +151,98 @@
 
 <br />
 
-
-
-### 🏃 
-
-- 
+## 👨🏻‍💻 Next.js 모든 페이지 사전 렌더링 (Pre-rendering)
+- 더 좋은 퍼포먼스, 검색엔진최적화(SEO)
+    1. 정적 생성
+    2. Server Side Rendering (SSR)
+- 정적 생성과 SSR의 차이점은 언제 html 파일을 생성하는가 이다.
 
 <br />
+
+### 🏃 정적 생성
+- 프로젝트가 빌드하는 시점에 html파일들이 생성
+- 모든 요청에 재사용
+- 퍼포먼스 이유로, Next.js는 정적 생성을 권고
+- 정적 생성된 페이지들은 CDN에 캐시
+- getStaticPrors / getStaticPaths
+
+<br />
+
+### 🏃 SSR
+- 매 요청마다 html을 생성
+- 항상 최신 상태 유지
+- getServerSideProps
+
+<br />
+
+```js
+    //view/[id].js
+    //getServerSideProps return 값인 item을 Post의 props로 받아올 수 있다.
+    export default function Post({ item }) {
+        return (
+            <>
+                {item && (
+                    <Item item={item} />
+                )}
+            </>
+        );
+    };
+
+    //getServerSideProps
+    //context props는 파마리터, 요청, 응답 쿼리가 담겨져 온다.
+    export async function getServerSideProps(context) {
+        const id = context.params.id;
+        const apiUrl = `http://makeup-api.herokuapp.com/api/v1/products/${id}.json`;
+        const res = await axios.get(apiUrl);
+        const data = res.data;
+
+        return {
+            props: {
+                item:data,
+            }
+        }
+    };
+```
+
+<br />
+
+## 👨🏻‍💻 Page 이동: Link, router
+- Page를 이동할 때 Link나 router를 사용한다.
+- a태그나 location.href를 사용해도 되지만 이는, 페이지가 새로 고침되므로 SPA의 장점이 사라지니 사용하지 않는게 좋다.
+
+<br />
+
+### 🏃 Link
+```js
+    //import 
+    import Link from "next/link";
+
+    //Link 컴포넌트
+    <Grid.Column key={id}>
+        <Link href={`/view/${item.id}`}>
+            <a>
+            (...)
+            </a>
+        </Link>
+    </Grid.Column>
+```
+
+<br />
+
+### 🏃 router
+```js
+    //import 
+    import { useRouter } from "next/router";
+
+    //router 생성
+    const router = useRouter();
+
+    //router.push를 통해 웹페이지 이동
+    const goLink = (e, data) => {
+        if (data.name === "home") {
+            router.push("/");
+        } else if (data.name === "about") {
+            router.push("/about");
+        }
+    };
+```

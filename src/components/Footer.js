@@ -1,17 +1,18 @@
-import { Divider } from 'semantic-ui-react';
+import { Divider } from "semantic-ui-react";
 
 export default function Footer() {
-    return (
+  return (
     <>
-        <Divider />
-        <div 
-            style={{ 
-                display:"block", 
-                textAlign:"center", 
-                padding: "30px 0" 
-            }}>
-            Copyright 전민재. All rights reserved.
-        </div>
+      <Divider />
+      <div
+        style={{
+          display: "block",
+          textAlign: "center",
+          padding: "30px 0",
+        }}
+      >
+        Copyright 전민재. All rights reserved.
+      </div>
     </>
-    )
+  );
 }
