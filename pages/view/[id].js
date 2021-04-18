@@ -2,7 +2,7 @@ import axios from "axios";
 import Item from "../../src/components/Item";
 import Head from "next/head";
 
-export default function Post({ item }) {
+export default function Post({ item, name }) {
   return (
     <>
       {item && (
@@ -11,6 +11,7 @@ export default function Post({ item }) {
             <title>{item.name}</title>
             <meta name="description" content={item.description} />
           </Head>
+          {name} 환경입니다.
           <Item item={item} />
         </>
       )}
@@ -18,7 +19,8 @@ export default function Post({ item }) {
   );
 }
 
-//SSR
+//SSR (node.js 환경)
+//getServerSideProps는 브라우저 환경이 아님 서버에서 동작
 export async function getServerSideProps(context) {
   const id = context.params.id;
   const apiUrl = `http://makeup-api.herokuapp.com/api/v1/products/${id}.json`;
@@ -28,6 +30,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       item: data,
+      name: process.env.name,
     },
   };
 }

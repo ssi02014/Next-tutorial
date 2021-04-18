@@ -246,3 +246,81 @@
         }
     };
 ```
+
+<br />
+
+## 👨🏻‍💻 Error Page
+### 🏃 404Page
+- 404.js 파일을 만들어 404 페이지를 관리할 수 있다.
+
+<br />
+
+```js
+    //404.js
+    import React from "react";
+    import { Icon } from "semantic-ui-react";
+
+    const Error404 = () => {
+        return (
+            <div style={{ padding: "200px 0", textAlign: "center", fontSize: 30 }}>
+                <Icon name="warning circle" color="red" />
+                404Page: 해당 페이지를 찾을 수 없습니다.
+            </div>
+        );
+    };
+
+    export default Error404;
+
+```
+
+<br />
+
+### 🏃 Sever Error Page
+- _error.js 파일을 만들어 에러 페이지를 관리할 수 있다. (500error 등)
+- 여기서 404page도 관리할 수 있지만 404Page는 static으로 제공하는게 좋기 때문에 404.js 파일을 만들어 관리한다.
+
+<br />
+
+```js
+    //_error.js
+    import React from "react";
+
+    const Error = ({ statusCode }) => {
+        return (
+            <div>
+                {statusCode
+                ? `An error ${statusCode} occurred on sever`
+                : `An error occurred on client`}
+            </div>
+        );
+    };
+
+    Error.getInitailProps = ({ res, req }) => {
+        const statusCode = res ? res.statusCode : err ? err.statusCode : 404;
+
+        return { statusCode };
+    };
+
+    export default Error;
+```
+
+<br />
+
+## 👨🏻‍💻 환경 변수
+- next.js는 기본적으로 환경 변수를 관리할 수 있는 기능을 제공한다.
+- .env.development (개발 환경), .env.production (배포 환경)
+- node.js 환경은 대표적으로 [id].js 파일에 있는 getServerSideProps 메서드 임 이 메서드 안에서 window 메서드를 쓰면 에러가 남
+
+<br />
+
+```
+    //node.js 환경 사용법 ex) [id].js 파일의 getServerSideProps 메서드
+    process.env.변수명
+
+    //browser 환경 사용법 index.js 파일
+    process.env.NEXT_PUBLIC_변수명
+
+    //.env.production
+    name=PRODUCTION
+    NEXT_PUBLIC_API_URL=http://makeup-api.herokuapp.com/api/v1/products.json?brand=dior
+```
