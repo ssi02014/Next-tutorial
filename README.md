@@ -152,6 +152,7 @@
 <br />
 
 ## 👨🏻‍💻 Next.js 모든 페이지 사전 렌더링 (Pre-rendering)
+- pre-rendering이란, 기본적으로 모든 페이지 pre-render 즉, 사전에 HTML 파일들을 만든다는 의미이다.
 - 더 좋은 퍼포먼스, 검색엔진최적화(SEO)
     1. 정적 생성
     2. Server Side Rendering (SSR)
@@ -159,10 +160,10 @@
 
 <br />
 
-### 🏃 정적 생성
+### 🏃 정적 생성(Static Genration)
+- next에서는 마케팅 페이지, 블로그 게시물, 제품 목록, 도움말 과 문서 등과 같은 페이지에 정적 생성을 사용하라고 권고
 - 프로젝트가 빌드하는 시점에 html파일들이 생성
 - 모든 요청에 재사용
-- 퍼포먼스 이유로, Next.js는 정적 생성을 권고
 - 정적 생성된 페이지들은 CDN에 캐시
 - getStaticPrors / getStaticPaths
 
@@ -170,7 +171,8 @@
 
 ### 🏃 SSR
 - 매 요청마다 html을 생성
-- 항상 최신 상태 유지
+- 항상 최신 상태 유지를 해야 하는 경우 SSR을 사용
+- 관리자 페이지, 분석 차트 등의 페이지에 사용
 - getServerSideProps
 
 <br />
@@ -324,3 +326,24 @@
     name=PRODUCTION
     NEXT_PUBLIC_API_URL=http://makeup-api.herokuapp.com/api/v1/products.json?brand=dior
 ```
+
+## 👨🏻‍💻 Dynamic Router에 Static Generation?
+- Dynamic Router Static Generation을 적용하려면 getStaticPaths() 메서드를 사용하면 된다. 단, params가 예측되고 사전에 미리 지정해놔야만 가능하다.
+- getStaticPaths() fallback을 true로하면 paths를 지정해준 것들을 제외하고 최초 접속시 props에 빈 데이터로 보여지다가 후에 백그라운드에서 정적파일인 html과 css를 생성해준다. 그리고 next.js는 pre-rendering 목록에 추가한다. 따라서 2번째 접속부터는 static generation을 한 것과 동일해진다.
+
+<br />
+
+```js
+    export async function getStaticPaths() {
+        return {
+            paths: [
+                { params: { id: "740" } },
+                { params: { id: "730" } },
+                { params: { id: "729" } },
+            ],
+            fallback: true,
+        };
+    }
+```
+
+- (+a)로 Link 태그의 prefetch 기능을 통해 스크롤을 통해 미리 정적 페이지를 만들 수 있다.
