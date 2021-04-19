@@ -330,20 +330,54 @@
 ## 👨🏻‍💻 Dynamic Router에 Static Generation?
 - Dynamic Router Static Generation을 적용하려면 getStaticPaths() 메서드를 사용하면 된다. 단, params가 예측되고 사전에 미리 지정해놔야만 가능하다.
 - getStaticPaths() fallback을 true로하면 paths를 지정해준 것들을 제외하고 최초 접속시 props에 빈 데이터로 보여지다가 후에 백그라운드에서 정적파일인 html과 css를 생성해준다. 그리고 next.js는 pre-rendering 목록에 추가한다. 따라서 2번째 접속부터는 static generation을 한 것과 동일해진다.
+- paths는 빈 배열이여도 상관없다.
 
 <br />
 
 ```js
     export async function getStaticPaths() {
+        const apiUrl = process.env.apiUrl;
+        const res = await axios.get(apiUrl);
+        const data = res.data;
+
         return {
-            paths: [
-                { params: { id: "740" } },
-                { params: { id: "730" } },
-                { params: { id: "729" } },
-            ],
+            paths: data.slice(0, 9).map((item) => ({
+                params: {
+                    id: item.id.toString(),
+                },
+            })),
             fallback: true,
         };
     }
 ```
 
+<br />
+
 - (+a)로 Link 태그의 prefetch 기능을 통해 스크롤을 통해 미리 정적 페이지를 만들 수 있다.
+
+<br />
+
+## 👨🏻‍💻 isFallback
+- useRouter에서 isFaillback이 있다. 기능은 로딩 전에는 true였다가 로딩이 끝나면 false로 바뀐다. 이것으로 loading을 구현할 수 있다.
+
+```js
+    //사용법
+    import { useRouter } from "next/router";
+    import { Loader } from "semantic-ui-react";
+    
+    export default function Post({ item, name }) {
+        const router = useRouter();
+
+        if (router.isFallback) {
+            return (
+                <div style={{ padding: "100px 0" }}>
+                    <Loader active inline="centered"></Loader>
+                </div>
+            );
+        }
+
+        return ( ... )
+    }
+```
+
+<br />
